@@ -18,6 +18,7 @@ public class FoodsListActivity extends ListActivity {
     private Food[] foods;
     private static final String TAG = "MainActivity";
     ArrayList<String> foodsList = new ArrayList<String>();
+    ArrayList<String> priceList = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,12 @@ public class FoodsListActivity extends ListActivity {
                     foodsParser.next();
                     foodsList.add(foodsParser.getText());
                 }
+
+                if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("price")) {
+                    foodsParser.next();
+                    priceList.add(foodsParser.getText());
+                }
+
                 eventType = foodsParser.next();
             }
         }
@@ -38,23 +45,20 @@ public class FoodsListActivity extends ListActivity {
             Toast.makeText(this, "Error XML-file loading: " + t.toString(), Toast.LENGTH_LONG)
                     .show();
         }
-        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                foodsList));
+        //setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, foodsList));
 
         // set foods
-        /*countries = getResources().getStringArray(R.array.countries);
-        capitals = getResources().getStringArray(R.array.capitals);
-        flags = getResources().getStringArray(R.array.flags);*/
+
 
         foods = new Food[foodsList.size()];
         int flagsResource;
         for(int i=0; i<foodsList.size();i++){
           /*  flagsResource = getResources().getIdentifier(flags[i],"drawable",getPackageName());
             foods[i]=new State(countries[i],capitals[i],flagsResource);*/
-            foods[i]=new Food(foodsList.get(i),"some price");
+            foods[i]=new Food(foodsList.get(i),priceList.get(i));
         }
 
-        //setListAdapter(new FoodAdapter(foods));
+        setListAdapter(new FoodAdapter(foods));
 
 
     }
