@@ -15,7 +15,7 @@ import org.xmlpull.v1.XmlPullParser;
 import java.util.ArrayList;
 
 public class FoodsListActivity extends ListActivity {
-    private State[] states ;
+    private Food[] foods;
     private static final String TAG = "MainActivity";
     ArrayList<String> foodsList = new ArrayList<String>();
     @Override
@@ -41,33 +41,34 @@ public class FoodsListActivity extends ListActivity {
         setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 foodsList));
 
-        // set states
+        // set foods
         /*countries = getResources().getStringArray(R.array.countries);
         capitals = getResources().getStringArray(R.array.capitals);
         flags = getResources().getStringArray(R.array.flags);*/
 
-        states= new State[foodsList.size()];
+        foods = new Food[foodsList.size()];
         int flagsResource;
         for(int i=0; i<foodsList.size();i++){
           /*  flagsResource = getResources().getIdentifier(flags[i],"drawable",getPackageName());
-            states[i]=new State(countries[i],capitals[i],flagsResource);*/
+            foods[i]=new State(countries[i],capitals[i],flagsResource);*/
+            foods[i]=new Food(foodsList.get(i),"some price");
         }
 
-        //setListAdapter(new StateAdapter(states));
+        //setListAdapter(new FoodAdapter(foods));
 
 
     }
 
     // State adapter
 
-    private State getModel(int position) {
-        return(((StateAdapter)getListAdapter()).getItem(position));
+    private Food getFoodPosition(int position) {
+        return(((FoodAdapter)getListAdapter()).getItem(position));
     }
-    class StateAdapter extends ArrayAdapter<State> {
+    class FoodAdapter extends ArrayAdapter<Food> {
 
         private LayoutInflater mInflater;
 
-        StateAdapter(State[] list) {
+        FoodAdapter(Food[] list) {
             super(FoodsListActivity.this,R.layout.activity_foods_list,  list);
             mInflater = LayoutInflater.from(FoodsListActivity.this);
         }
@@ -79,9 +80,8 @@ public class FoodsListActivity extends ListActivity {
 
                 row = mInflater.inflate(R.layout.activity_foods_list, parent, false);
                 holder = new ViewHolder();
-/*                holder.imageView = (ImageView) row.findViewById(R.id.flag);
                 holder.nameView = (TextView) row.findViewById(R.id.name);
-                holder.capitalView = (TextView) row.findViewById(R.id.capital);*/
+                holder.priceView = (TextView) row.findViewById(R.id.price);
                 row.setTag(holder);
             }
             else{
@@ -89,18 +89,18 @@ public class FoodsListActivity extends ListActivity {
                 holder = (ViewHolder)row.getTag();
             }
 
-            State state = getModel(position);
+            Food food = getFoodPosition(position);
 
-/*            holder.imageView.setImageResource((state.getFlagResource()));
-            holder.nameView.setText(state.getName());
-            holder.capitalView.setText(state.getCapital());*/
+         //   holder.imageView.setImageResource((state.getFlagResource()));
+            holder.nameView.setText(food.getName());
+            holder.priceView.setText(food.getPrice());
 
             return row;
         }
 
         class ViewHolder {
            // public ImageView imageView;
-            public TextView nameView, capitalView;
+            public TextView nameView, priceView;
         }
     }
 }
