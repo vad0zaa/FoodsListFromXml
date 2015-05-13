@@ -51,10 +51,8 @@ public class FoodsListActivity extends ListActivity {
 
 
         foods = new Food[foodsList.size()];
-        int flagsResource;
+
         for(int i=0; i<foodsList.size();i++){
-          /*  flagsResource = getResources().getIdentifier(flags[i],"drawable",getPackageName());
-            foods[i]=new State(countries[i],capitals[i],flagsResource);*/
             foods[i]=new Food(foodsList.get(i),priceList.get(i));
         }
 
