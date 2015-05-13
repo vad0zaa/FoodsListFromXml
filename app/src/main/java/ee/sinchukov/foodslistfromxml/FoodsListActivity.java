@@ -53,7 +53,7 @@ public class FoodsListActivity extends ListActivity {
             states[i]=new State(countries[i],capitals[i],flagsResource);*/
         }
 
-        setListAdapter(new StateAdapter(states));
+        //setListAdapter(new StateAdapter(states));
 
 
     }
