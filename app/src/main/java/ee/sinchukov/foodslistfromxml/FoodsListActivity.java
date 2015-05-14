@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class FoodsListActivity extends ListActivity {
     public static final String EXTRA_FOOD_ID = "ee.sinchukov.customarrayadapter.FOOD_ID";
+    public static final String EXTRA_FOOD_POSITION = "ee.sinchukov.customarrayadapter.FOOD_POSITION";
 
     protected Food[] foods;
     private static final String TAG = "MainActivity";
@@ -105,20 +106,24 @@ public class FoodsListActivity extends ListActivity {
 
                 // show info screen
                 Log.v(TAG, "start show info");
-                showInfo(selectedFood.getId());
+                showInfo(selectedFood.getId(),  position);
             }
         };
         getListView().setOnItemClickListener(itemListener);
     }
 
-    protected void showInfo(String foodId){
+    protected void showInfo(String foodId, int position){
         Intent intent = new Intent(this,InfoActivity.class);
         // pass item position to info screen
         intent.putExtra(FoodsListActivity.EXTRA_FOOD_ID, foodId);
         Log.v(TAG, "put EXTRA_FOOD_ID:"+ foodId);
+
+        intent.putExtra(FoodsListActivity.EXTRA_FOOD_POSITION, position);
+        Log.v(TAG, "put EXTRA_FOOD_POSITION:"+ position);
         //show info screen
         startActivity(intent);
     }
+
 
     public static String getInfobyFoodId(String id){
         return "info about id "+id;
