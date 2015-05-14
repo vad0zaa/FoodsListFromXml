@@ -25,12 +25,19 @@ String name,price,description,calories;
     TextView textViewInfo, textViewName, textViewDescription, textViewPrice, textViewCalories;
     private static final String TAG = "MainActivity";
 
+    String currentFoodId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
         Log.v(TAG, "info activity OnCreate started");
+
+        textViewName = (TextView)findViewById(R.id.textViewName);
+        textViewPrice = (TextView)findViewById(R.id.textViewPrice);
+        textViewDescription = (TextView)findViewById(R.id.textViewDescription);
+        textViewCalories = (TextView)findViewById(R.id.textViewCalories);
 
         // get extras from Main Screen
         extras = getIntent().getExtras();
@@ -47,44 +54,31 @@ String name,price,description,calories;
         textView.setText(test);
 
         //  parse again by id
+
         try {
             XmlPullParser foodsParser = getResources().getXml(R.xml.foods);
             int eventType = foodsParser.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("name")) {
-
-                    if (foodsParser.getAttributeName(0).equals("food_id") && foodsParser.getAttributeValue(0).equals(id)) {
+                if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("name") ) {
+                    currentFoodId = foodsParser.getAttributeValue(0);
+                    if (currentFoodId.equals(id)) {
                         foodsParser.next();
-                        textViewName = (TextView)findViewById(R.id.textViewName);
-                        textViewName.setText("name: "+foodsParser.getText());
-                        eventType = foodsParser.next();
+                        textViewName.setText("name: " + foodsParser.getText());
+                        foodsParser.next();
+                        foodsParser.next();
+                        foodsParser.next();
+                        textViewPrice.setText("price: " + foodsParser.getText());
+                        foodsParser.next();
+                        foodsParser.next();
+                        foodsParser.next();
+                        textViewDescription.setText("Description: " + foodsParser.getText());
+                        foodsParser.next();
+                        foodsParser.next();
+                        foodsParser.next();
+                        textViewCalories.setText("Calories: " + foodsParser.getText());
+                    }
 
-                        if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("price")) {
-                            foodsParser.next();
-                            textViewPrice = (TextView)findViewById(R.id.textViewPrice);
-                            textViewPrice.setText("price: "+foodsParser.getText());
-                            eventType = foodsParser.next();
-                        }
-
-                        if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("description")) {
-                            foodsParser.next();
-                            textViewDescription = (TextView)findViewById(R.id.textViewDescription);
-                            textViewDescription.setText("Description: "+foodsParser.getText());
-                            eventType = foodsParser.next();
-                        }
-
-                        if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("calories")) {
-                            foodsParser.next();
-                            textViewCalories = (TextView)findViewById(R.id.textViewCalories);
-                            textViewCalories.setText("Calories: "+foodsParser.getText());
-                            eventType = foodsParser.next();
-                        }
-                     }
                 }
-
-
-
-
                 eventType = foodsParser.next();
             }
         }
