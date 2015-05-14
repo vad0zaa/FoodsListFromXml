@@ -19,6 +19,7 @@ public class FoodsListActivity extends ListActivity {
     private static final String TAG = "MainActivity";
     ArrayList<String> foodsList = new ArrayList<String>();
     ArrayList<String> priceList = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +31,15 @@ public class FoodsListActivity extends ListActivity {
                 if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("name")) {
                     foodsParser.next();
                     foodsList.add(foodsParser.getText());
+                    Log.v(TAG, "added name:"+foodsParser.getText());
+                    eventType = foodsParser.next();
                 }
 
                 if (eventType==XmlPullParser.START_TAG && foodsParser.getName().equals("price")) {
                     foodsParser.next();
                     priceList.add(foodsParser.getText());
+                    Log.v(TAG, "added price:"+foodsParser.getText());
+                    eventType = foodsParser.next();
                 }
 
                 eventType = foodsParser.next();
@@ -45,17 +50,19 @@ public class FoodsListActivity extends ListActivity {
             Toast.makeText(this, "Error XML-file loading: " + t.toString(), Toast.LENGTH_LONG)
                     .show();
         }
-        //setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, foodsList));
 
         // set foods
-
+        Log.v(TAG, "set foods started, need to fill foods arrays...");
 
         foods = new Food[foodsList.size()];
 
         for(int i=0; i<foodsList.size();i++){
             foods[i]=new Food(foodsList.get(i),priceList.get(i));
         }
+        // set foods end
+        Log.v(TAG, "set foods finished, foods arrays are ready...");
 
+        Log.v(TAG, "set foodAdapter...");
         setListAdapter(new FoodAdapter(foods));
 
 
