@@ -9,28 +9,44 @@ package ee.sinchukov.foodslistfromxml;
  */
 public class Food {
 
-    private String name; // название
+    private String name;
     private String price;
+    private String description;
+    private String calories;
+    private String id;
 
-    public Food(String name, String price){
+
+    public Food(String name, String price, String description, String calories, String id){
 
         this.name=name;
         this.price = price;
-      //  this.flagResource=flag;
+        this.description = description;
+        this.calories = calories;
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
+    public String getPrice() {
+        return price;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public String getCalories() {
+        return calories;
+    }
+    public String getId() {
+        return id;
+    }
+
+
+
 
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getPrice() {
-        return price;
-    }
-
     public void setPrice(String price) {
         this.price = price;
     }
